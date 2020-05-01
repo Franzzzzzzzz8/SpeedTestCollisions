@@ -9,7 +9,7 @@ rm Temp
 for ((i=0 ; i<nrun ; i++))
 do python Distance-nonumpy.py >> Temp ; echo -n "."
 done 
-awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "PYTHON raw", s1/NR, s2/NR}' Temp 
+awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "PYTHON nonumpy", s1/NR, s2/NR}' Temp 
 
 exit
 
