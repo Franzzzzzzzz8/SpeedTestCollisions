@@ -3,15 +3,7 @@
 nrun=50
 rm Timing.log
 
-echo -en "\n====== PYTHON version ===="
-echo ""
-rm Temp 
-for ((i=0 ; i<nrun ; i++))
-do python Distance-nonumpy.py >> Temp ; echo -n "."
-done 
-awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "PYTHON nonumpy", s1/NR, s2/NR}' Temp 
 
-exit
 
 
 echo -en "\n===== Cpp version ===="
@@ -103,7 +95,15 @@ do nodejs Distance.js | egrep -o '[.0-9]+' | tr '\n' ' ' >> Temp ; echo -n "."
 done 
 awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "JS", s1/NR/1000., s2/NR}' Temp >> Timing.log
 
+echo -en "\n====== WASM version ===="
+echo ""
+rm Temp 
+for ((i=0 ; i<nrun ; i++))
+do node Distance_emscripten.js | egrep -o '[.0-9]+' | tr '\n' ' ' >> Temp ; echo -n "."
+done 
+awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "WASM", s1/NR, s2/NR}' Temp >> Timing.log
 
+exit
 
 echo -en "\n====== MATLAB version ===="
 echo ""
@@ -182,6 +182,13 @@ for ((i=0 ; i<nrun ; i++))
 do python Distance-v4.py >> Temp ; echo -n "."
 done 
 awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "PYTHON numba+numpy", s1/NR, s2/NR}' Temp >> Timing.log
+
+echo ""
+rm Temp 
+for ((i=0 ; i<nrun ; i++))
+do python Distance-nonumpy.py >> Temp ; echo -n "."
+done 
+awk 'BEGIN{OFS = ","} {s1 += $1 ; s2 +=$2 ;} END{print "PYTHON nonumpy", s1/NR, s2/NR}' Temp >> Timing.log
 
 
 
